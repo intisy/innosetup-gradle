@@ -16,7 +16,7 @@ public class InnoSetup {
         this.path = path;
         this.fileName = "libs\\" + fileName;
         this.name = name;
-        this.iconPath = name.toLowerCase() + ".ico";
+        this.iconPath = name.toLowerCase().replace(" ", "-") + ".ico";
         if (copyIcon)
             Files.copy(icon == null ? path.getParentFile().toPath().resolve(iconPath) : icon.toPath(), path.toPath().resolve(iconPath));
         this.jreName = "libs\\jre";
