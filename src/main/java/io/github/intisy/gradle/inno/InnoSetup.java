@@ -46,7 +46,7 @@ public class InnoSetup {
                 "DefaultDirName={pf}\\" + name.replace(" ", "") + "\n" +
                 "DefaultGroupName=" + name.replace(" ", "") + "\n" +
                 "OutputDir=libs\n" +
-                "OutputBaseFilename=" + name.toLowerCase() + "-installer\n" +
+                "OutputBaseFilename=" + name.toLowerCase().replace(" ", "-") + "-installer\n" +
                 "SetupIconFile=" + iconPath + "\n" +
                 "Compression=lzma\n" +
                 "SolidCompression=yes\n" +
