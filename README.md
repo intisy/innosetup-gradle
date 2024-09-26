@@ -1,10 +1,10 @@
-# Github Gradle
+# Inno Setup Gradle
 
-Archives containing JAR files are available as [releases](https://github.com/intisy/intisy/github-gradle/releases).
+Archives containing JAR files are available as [releases](https://github.com/intisy/intisy/innosetup-gradle/releases).
 
 ## What is Online Gradle?
 
-Online Gradle implements a way to get dependencies from a GitHub asset, so you don't need services like jitpack anymore
+inno-gradle lets you automatically use InnoSetup from gradle
 
 ## Usage
 
@@ -12,7 +12,7 @@ Using the plugins DSL:
 
 ```groovy
 plugins {
-    id "io.github.intisy.intisy/github-gradle" version "1.3"
+    id "io.github.intisy.intisy/innosetup-gradle" version "1.0"
 }
 ```
 
@@ -26,18 +26,19 @@ buildscript {
         }
     }
     dependencies {
-        classpath "io.github.intisy:intisy/github-gradle:1.3"
+        classpath "io.github.intisy:intisy/innosetup-gradle:1.0"
     }
 }
 
-apply plugin: "io.github.intisy.intisy/github-gradle"
+apply plugin: "io.github.intisy.intisy/innosetup-gradle"
 ```
 
 Once you have the plugin installed you can use it like so:
 
 ```groovy
-dependencies {
-    githubImplementation "USERNAME:REPOSITORY:TAG"
+inno {
+    filename = "your-exe.exe"
+    name = "program-name"
 }
 ```
 
