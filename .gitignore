@@ -1,0 +1,5 @@
+userHome
+build
+.gradle
+/.idea
+/test
