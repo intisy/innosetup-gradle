@@ -17,8 +17,10 @@ public class InnoSetup {
         this.fileName = "libs\\" + fileName;
         this.name = name;
         this.iconPath = name.toLowerCase().replace(" ", "-") + ".ico";
-        if (copyIcon)
+        if (copyIcon) {
+            path.toPath().resolve(iconPath).toFile().delete();
             Files.copy(icon == null ? path.getParentFile().toPath().resolve(iconPath) : icon.toPath(), path.toPath().resolve(iconPath));
+        }
         this.jreName = "libs\\jre";
     }
 
