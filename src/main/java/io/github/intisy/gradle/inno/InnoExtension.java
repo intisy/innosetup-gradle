@@ -17,7 +17,7 @@ public class InnoExtension {
     public void run(Project project) {
         if (filename != null && name != null) {
             try {
-                new InnoSetup(project.getBuildFile(), filename, name, icon, true).buildInstaller();
+                new InnoSetup(project.getProjectDir(), filename, name, icon, true).buildInstaller();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
