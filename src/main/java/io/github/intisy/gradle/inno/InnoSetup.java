@@ -12,13 +12,13 @@ public class InnoSetup {
     String name;
     String jreName;
 
-    public InnoSetup(File path, String fileName, String name, boolean copyIcon) throws IOException {
+    public InnoSetup(File path, String fileName, String name, File icon, boolean copyIcon) throws IOException {
         this.path = path;
         this.fileName = "libs\\" + fileName;
         this.name = name;
         this.iconPath = name.toLowerCase() + ".ico";
         if (copyIcon)
-            Files.copy(path.getParentFile().toPath().resolve(iconPath), path.toPath().resolve(iconPath));
+            Files.copy(icon == null ? path.getParentFile().toPath().resolve(iconPath) : icon.toPath(), path.toPath().resolve(iconPath));
         this.jreName = "libs\\jre";
     }
 

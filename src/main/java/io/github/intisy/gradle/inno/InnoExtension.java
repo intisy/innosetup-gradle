@@ -8,6 +8,7 @@ import java.io.IOException;
 public class InnoExtension {
     private String filename;
     private String name;
+    private File icon;
 
     public String getFilename() {
         return filename;
@@ -16,7 +17,7 @@ public class InnoExtension {
     public void run(Project project) {
         if (filename != null && name != null) {
             try {
-                new InnoSetup(project.getBuildFile(), filename, name, true).buildInstaller();
+                new InnoSetup(project.getBuildFile(), filename, name, icon, true).buildInstaller();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -25,17 +26,24 @@ public class InnoExtension {
 
     public void run(File project) {
         try {
-            new InnoSetup(project, filename, name, false).buildInstaller();
+            new InnoSetup(project, filename, name, icon, false).buildInstaller();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setIcon(File icon) {
+        this.icon = icon;
+    }
+
+    public File getIcon() {
+        return icon;
     }
 
     public void setFilename(String filename) {
         this.filename = filename;
     }
 
-    // Getter and Setter for name
     public String getName() {
         return name;
     }
