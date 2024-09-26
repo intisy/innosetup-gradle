@@ -6,18 +6,20 @@ import java.io.File;
 import java.io.IOException;
 
 public class InnoExtension {
-    private String filename = "default.exe";
-    private String name = "DefaultName";
+    private String filename;
+    private String name;
 
     public String getFilename() {
         return filename;
     }
 
     public void run(Project project) {
-        try {
-            new InnoSetup(project.getBuildFile(), filename, name, true).buildInstaller();
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        if (filename != null && name != null) {
+            try {
+                new InnoSetup(project.getBuildFile(), filename, name, true).buildInstaller();
+            } catch (IOException | InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
