@@ -23,12 +23,12 @@ public class InnoSetupTask extends DefaultTask {
     }
 
     @Input
-    public File getIcon() {
-        return icon;
+    public String getIcon() {
+        return icon.getAbsolutePath();
     }
 
-    public void setIcon(File icon) {
-        this.icon = icon;
+    public void setIcon(String icon) {
+        this.icon = new File(icon);
     }
 
     @Input
