@@ -48,6 +48,8 @@ public class InnoSetupTask extends DefaultTask {
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
+        } else {
+            System.out.println("Please define 'fileName' and 'name'");
         }
     }
 }
