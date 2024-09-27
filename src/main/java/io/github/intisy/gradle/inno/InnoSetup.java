@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Objects;
 
 public class InnoSetup {
     File path;
@@ -25,7 +27,10 @@ public class InnoSetup {
     }
 
     public void buildInstaller() throws IOException, InterruptedException {
-        File innoSetupCompiler = GitHub.download().resolve("ISCC.exe").toFile();
+        Path innoFolder = path.toPath().resolve("inno");
+        innoFolder.toFile().delete();
+        Files.copy(Objects.requireNonNull(GitHub.download()), innoFolder);
+        File innoSetupCompiler = innoFolder.resolve("ISCC.exe").toFile();
         File scriptPath = path.toPath().resolve("build.iss").toFile();
         createInnoSetupScript(scriptPath);
         System.out.println("Starting Inno Setup script");
