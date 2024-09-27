@@ -28,13 +28,14 @@ public class InnoSetup {
         File innoSetupCompiler = GitHub.download().resolve("ISCC.exe").toFile();
         File scriptPath = path.toPath().resolve("build.iss").toFile();
         createInnoSetupScript(scriptPath);
+        System.out.println("Starting Inno Setup script");
         ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
         processBuilder.directory(path);
         processBuilder.start();
-        System.out.println("OUTPUT:");
         File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer").toFile();
-        System.out.println(output);
+        System.out.println("Waiting for output to be written to " + output);
         FileUtils.waitForFile(output, 10);
+        System.out.println("Finished Inno Setup to " + output);
     }
 
     public void createInnoSetupScript(File scriptPath) throws IOException {
