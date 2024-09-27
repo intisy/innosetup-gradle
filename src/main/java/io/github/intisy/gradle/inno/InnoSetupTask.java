@@ -11,7 +11,7 @@ import java.io.IOException;
 public class InnoSetupTask extends DefaultTask {
     private String fileName;
     private String name;
-    private File icon;
+    private String icon;
 
     @Input
     public @NotNull String getName() {
@@ -24,11 +24,11 @@ public class InnoSetupTask extends DefaultTask {
 
     @Input
     public String getIcon() {
-        return icon.getAbsolutePath();
+        return icon;
     }
 
     public void setIcon(String icon) {
-        this.icon = new File(icon);
+        this.icon = icon;
     }
 
     @Input
@@ -44,7 +44,7 @@ public class InnoSetupTask extends DefaultTask {
     public void createExe() {
         if (fileName != null && name != null) {
             try {
-                new InnoSetup(getProject().getBuildDir(), fileName, name, icon, true).buildInstaller();
+                new InnoSetup(getProject().getBuildDir(), fileName, name, icon != null ? new File(icon) : null, true).buildInstaller();
             } catch (IOException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
