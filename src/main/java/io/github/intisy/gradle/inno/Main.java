@@ -9,12 +9,14 @@ import java.io.File;
  * Main class.
  */
 class Main implements org.gradle.api.Plugin<Project> {
+	boolean auto = false;
 	/**
 	 * Applies all the project stuff.
 	 */
     public void apply(Project project) {
 		InnoExtension innoExtension = project.getExtensions().create("inno", InnoExtension.class);
-		project.afterEvaluate(proj -> innoExtension.run(project));
+		if (auto)
+			project.afterEvaluate(proj -> innoExtension.run(project));
 		Task task = project.task("processInnoValues");
 		task.doLast(proj -> innoExtension.run(project));
     }
