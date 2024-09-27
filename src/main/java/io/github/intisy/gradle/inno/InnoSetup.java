@@ -33,7 +33,7 @@ public class InnoSetup {
         File innoSetupCompiler = innoFolder.resolve("ISCC.exe").toFile();
         File scriptPath = path.toPath().resolve("build.iss").toFile();
         createInnoSetupScript(scriptPath);
-        System.out.println("Starting Inno Setup script");
+        System.out.println("Starting Inno Setup script " + scriptPath.getAbsolutePath() + " using " + innoSetupCompiler.getAbsolutePath());
         ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
         processBuilder.directory(path);
         processBuilder.start();
