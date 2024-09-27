@@ -30,7 +30,8 @@ public class InnoSetup {
         createInnoSetupScript(scriptPath);
         ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
         processBuilder.directory(path);
-        Process process = processBuilder.start();
+        processBuilder.start();
+        FileUtils.waitForFile(path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer").toFile(), 10);
 //        int exitCode = process.waitFor();
 //        if (exitCode == 0) {
 //            System.out.println("Installer created successfully!");
