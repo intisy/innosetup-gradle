@@ -3,13 +3,10 @@ package io.github.intisy.gradle.inno;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.api.Task;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 
 public class InnoSetupTask extends DefaultTask {
     private String fileName;
