@@ -31,13 +31,10 @@ public class InnoSetup {
         ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
         processBuilder.directory(path);
         processBuilder.start();
-        FileUtils.waitForFile(path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer").toFile(), 10);
-//        int exitCode = process.waitFor();
-//        if (exitCode == 0) {
-//            System.out.println("Installer created successfully!");
-//        } else {
-//            System.err.println("Inno Setup compilation failed with exit code: " + exitCode);
-//        }
+        System.out.println("OUTPUT:");
+        File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer").toFile();
+        System.out.println(output);
+        FileUtils.waitForFile(output, 10);
     }
 
     public void createInnoSetupScript(File scriptPath) throws IOException {
