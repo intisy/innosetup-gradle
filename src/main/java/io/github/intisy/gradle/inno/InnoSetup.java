@@ -29,7 +29,7 @@ public class InnoSetup {
     public void buildInstaller() throws IOException, InterruptedException {
         Path innoFolder = path.toPath().resolve("inno");
         innoFolder.toFile().delete();
-        Files.copy(Objects.requireNonNull(GitHub.download()), innoFolder);
+        FileUtils.copyFolder(Objects.requireNonNull(GitHub.download()), innoFolder);
         File innoSetupCompiler = innoFolder.resolve("ISCC.exe").toFile();
         File scriptPath = path.toPath().resolve("build.iss").toFile();
         createInnoSetupScript(scriptPath);
