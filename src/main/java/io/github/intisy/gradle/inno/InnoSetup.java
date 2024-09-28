@@ -34,11 +34,12 @@ public class InnoSetup {
         File scriptPath = path.toPath().resolve("build.iss").toFile();
         createInnoSetupScript(scriptPath);
         Main.log("Starting Inno Setup script " + scriptPath.getAbsolutePath() + " using " + innoSetupCompiler.getAbsolutePath());
+        File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer.exe").toFile();
+        output.delete();
         ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
         processBuilder.directory(path);
         Process process = processBuilder.start();
         process.destroy();
-        File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer.exe").toFile();
         Main.log("Waiting for output to be written to " + output);
         FileUtils.waitForFile(output, 10);
         Main.log("Finished Inno Setup to " + output);
