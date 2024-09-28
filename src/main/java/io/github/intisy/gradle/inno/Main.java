@@ -18,25 +18,12 @@ class Main implements org.gradle.api.Plugin<Project> {
 	/**
 	 * Applies all the project stuff.
 	 */
-    public void apply(Project project) {
+    public void apply(Project project) { //TODO make it synchronized with gradle
 		InnoExtension innoExtension = project.getExtensions().create("inno", InnoExtension.class);
 		if (auto)
 			project.afterEvaluate(proj -> innoExtension.run(project));
 		Task task = project.task("processInnoValues");
 		task.doLast(proj -> innoExtension.run(project));
-		task = project.task("waitForInnoValues");
-		task.doLast(proj -> {
-			for (File file : files) {
-				Main.log("Waiting for output to be written to " + file);
-				try {
-					FileUtils.waitForFile(file, 1000);
-				} catch (InterruptedException | IOException e) {
-					throw new RuntimeException(e);
-				}
-				Main.log("Finished Inno Setup to " + file);
-				files.remove(file);
-			}
-		});
     }
 
 	public static void main(String[] args) {

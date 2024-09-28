@@ -37,8 +37,7 @@ public class InnoSetup {
         File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer.exe").toFile();
         output.delete();
         String[] command = {innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath()};
-        Process process = Runtime.getRuntime().exec(command, null, path);
-        process.waitFor();
+        Runtime.getRuntime().exec(command, null, path);
         Main.files.add(output);
     }
 
