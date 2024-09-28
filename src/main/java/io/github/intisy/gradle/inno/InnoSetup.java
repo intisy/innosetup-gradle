@@ -41,7 +41,7 @@ public class InnoSetup {
         Process process = processBuilder.start();
         process.destroy();
         Main.log("Waiting for output to be written to " + output);
-        FileUtils.waitForFile(output, 10);
+        FileUtils.waitForFile(output, 100);
         Main.log("Finished Inno Setup to " + output);
     }
 
