@@ -37,10 +37,9 @@ public class InnoSetup {
         File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer.exe").toFile();
         output.delete();
         Main.files.add(output);
-        ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
-        processBuilder.directory(path);
-        processBuilder.inheritIO();
-        processBuilder.start();
+        String[] command = {innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath()};
+        Process process = Runtime.getRuntime().exec(command, null, path);
+        process.waitFor();
     }
 
     public void createInnoSetupScript(File scriptPath) throws IOException {
