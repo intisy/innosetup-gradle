@@ -36,7 +36,8 @@ public class InnoSetup {
         System.out.println("Starting Inno Setup script " + scriptPath.getAbsolutePath() + " using " + innoSetupCompiler.getAbsolutePath());
         ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
         processBuilder.directory(path);
-        processBuilder.start();
+        Process process = processBuilder.start();
+        process.destroy();
         File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer.exe").toFile();
         System.out.println("Waiting for output to be written to " + output);
         FileUtils.waitForFile(output, 10);
