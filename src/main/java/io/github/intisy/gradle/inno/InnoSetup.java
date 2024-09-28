@@ -36,10 +36,10 @@ public class InnoSetup {
         Main.log("Starting Inno Setup script " + scriptPath.getAbsolutePath() + " using " + innoSetupCompiler.getAbsolutePath());
         File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer.exe").toFile();
         output.delete();
-        Main.files.add(output);
         String[] command = {innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath()};
         Process process = Runtime.getRuntime().exec(command, null, path);
         process.waitFor();
+        Main.files.add(output);
     }
 
     public void createInnoSetupScript(File scriptPath) throws IOException {
