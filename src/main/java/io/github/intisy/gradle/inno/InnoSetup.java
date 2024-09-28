@@ -36,12 +36,19 @@ public class InnoSetup {
         Main.log("Starting Inno Setup script " + scriptPath.getAbsolutePath() + " using " + innoSetupCompiler.getAbsolutePath());
         File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer.exe").toFile();
         output.delete();
-        ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
-        processBuilder.directory(path);
-        Process process = processBuilder.start();
-        process.destroy();
-//        Main.log("Waiting for output to be written to " + output);
-//        FileUtils.waitForFile(output, 100);
+        new Thread(() -> {
+            ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
+            processBuilder.directory(path);
+            Process process;
+            try {
+                process = processBuilder.start();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            process.destroy();
+        });
+        Main.log("Waiting for output to be written to " + output);
+        FileUtils.waitForFile(output, 100);
         Main.log("Finished Inno Setup to " + output);
     }
 
