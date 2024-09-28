@@ -45,7 +45,7 @@ public class InnoSetup {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            process.destroy();
+//            process.destroy();
         });
         Main.log("Waiting for output to be written to " + output);
         FileUtils.waitForFile(output, 100);
