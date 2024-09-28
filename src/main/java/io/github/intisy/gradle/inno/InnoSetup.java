@@ -39,8 +39,8 @@ public class InnoSetup {
         ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
         processBuilder.directory(path);
         Process process = processBuilder.start();
-//        process.destroy();
-        Main.log("Waiting for output to be written to " + output);
+        process.destroy();
+//        Main.log("Waiting for output to be written to " + output);
 //        FileUtils.waitForFile(output, 100);
         Main.log("Finished Inno Setup to " + output);
     }
