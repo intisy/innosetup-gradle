@@ -39,6 +39,7 @@ public class InnoSetup {
         Main.files.add(output);
         ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
         processBuilder.directory(path);
+        processBuilder.inheritIO();
         processBuilder.start();
     }
 
