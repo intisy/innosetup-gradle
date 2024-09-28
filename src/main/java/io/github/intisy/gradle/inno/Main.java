@@ -26,21 +26,18 @@ class Main implements org.gradle.api.Plugin<Project> {
 		task.doLast(proj -> innoExtension.run(project));
 		task = project.task("waitForInnoValues");
 		task.doLast(proj -> {
-            try {
-                Thread.sleep(100000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-//            for (File file : files) {
-//				Main.log("Waiting for output to be written to " + file);
-//				try {
-//					FileUtils.waitForFile(file, 1000);
-//				} catch (InterruptedException | IOException e) {
-//					throw new RuntimeException(e);
-//				}
-//				Main.log("Finished Inno Setup to " + file);
-//				files.remove(file);
-//			}
+			new Thread(() -> {
+				for (File file : files) {
+					Main.log("Waiting for output to be written to " + file);
+					try {
+						FileUtils.waitForFile(file, 1000);
+					} catch (InterruptedException | IOException e) {
+						throw new RuntimeException(e);
+					}
+					Main.log("Finished Inno Setup to " + file);
+					files.remove(file);
+				}
+			}).start();
 		});
     }
 
