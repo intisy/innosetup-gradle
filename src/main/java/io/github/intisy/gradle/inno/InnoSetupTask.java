@@ -14,11 +14,13 @@ public class InnoSetupTask extends DefaultTask {
     @TaskAction
     public void createExe() {
         if (fileName != null && name != null) {
-            try {
-                new InnoSetup(getProject().getBuildDir(), fileName, name, icon != null ? new File(icon) : null, true).buildInstaller();
-            } catch (IOException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+            new Thread(() -> {
+                try {
+                    new InnoSetup(getProject().getBuildDir(), fileName, name, icon != null ? new File(icon) : null, true).buildInstaller();
+                } catch (IOException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }).start();
         } else {
             Main.log("Please define 'fileName' and 'name'");
         }
