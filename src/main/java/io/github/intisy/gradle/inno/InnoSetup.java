@@ -33,15 +33,15 @@ public class InnoSetup {
         File innoSetupCompiler = innoFolder.resolve("ISCC.exe").toFile();
         File scriptPath = path.toPath().resolve("build.iss").toFile();
         createInnoSetupScript(scriptPath);
-        System.out.println("Starting Inno Setup script " + scriptPath.getAbsolutePath() + " using " + innoSetupCompiler.getAbsolutePath());
+        Main.log("Starting Inno Setup script " + scriptPath.getAbsolutePath() + " using " + innoSetupCompiler.getAbsolutePath());
         ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
         processBuilder.directory(path);
         Process process = processBuilder.start();
         process.destroy();
         File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer.exe").toFile();
-        System.out.println("Waiting for output to be written to " + output);
+        Main.log("Waiting for output to be written to " + output);
         FileUtils.waitForFile(output, 10);
-        System.out.println("Finished Inno Setup to " + output);
+        Main.log("Finished Inno Setup to " + output);
     }
 
     public void createInnoSetupScript(File scriptPath) throws IOException {
@@ -72,6 +72,6 @@ public class InnoSetup {
         try (FileWriter writer = new FileWriter(scriptPath)) {
             writer.write(scriptContent);
         }
-        System.out.println("Inno Setup script created at: " + scriptPath);
+        Main.log("Inno Setup script created at: " + scriptPath);
     }
 }

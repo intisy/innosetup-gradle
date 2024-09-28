@@ -8,17 +8,18 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 public class FileUtils {
 
-    public static void waitForFile(File file, long checkIntervalMillis) throws InterruptedException {
+    public static void waitForFile(File file, long checkIntervalMillis) throws InterruptedException, IOException {
         while (true) {
             if (file.exists()) {
-                if (isFileAccessible(file)) {
-                    System.out.println("File is available and not in use: " + file);
+                Main.log("File size: " + Files.size(file.toPath()));
+                if (isFileAccessible(file) && Files.size(file.toPath()) > 0) {
+                    Main.log("File is available and not in use: " + file);
                     break;
                 } else {
-                    System.out.println("File exists but is in use: " + file);
+                    Main.log("File exists but is in use: " + file);
                 }
             } else {
-                System.out.println("File does not exist yet: " + file);
+                Main.log("File does not exist yet: " + file);
             }
             Thread.sleep(checkIntervalMillis);
         }

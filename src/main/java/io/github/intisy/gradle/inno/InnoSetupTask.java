@@ -21,7 +21,7 @@ public class InnoSetupTask extends DefaultTask {
                 throw new RuntimeException(e);
             }
         } else {
-            System.out.println("Please define 'fileName' and 'name'");
+            Main.log("Please define 'fileName' and 'name'");
         }
     }
 }

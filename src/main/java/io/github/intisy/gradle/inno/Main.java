@@ -9,7 +9,8 @@ import java.io.File;
  * Main class.
  */
 class Main implements org.gradle.api.Plugin<Project> {
-	boolean auto = false;
+	static final boolean auto = false;
+	static final boolean debug = true;
 	/**
 	 * Applies all the project stuff.
 	 */
@@ -26,5 +27,10 @@ class Main implements org.gradle.api.Plugin<Project> {
 		innoExtension.setFilename("blizzity-standalone.exe");
 		innoExtension.setName("Blizzity");
 		innoExtension.run(new File("test"));
+	}
+	
+	public static void log(String log) {
+		if (debug)
+			System.out.println(log);
 	}
 }

@@ -20,22 +20,22 @@ public class GitHub {
         try {
             JsonObject latestReleaseZip = getLatestReleaseZip(GITHUB_LATEST_RELEASE_API);
             if (latestReleaseZip != null) {
-                System.out.println("Downloading from: " + latestReleaseZip);
+                Main.log("Downloading from: " + latestReleaseZip);
                 Path path = GradleUtils.getGradleHome().resolve("inno").resolve(latestReleaseZip.get("tag_name").getAsString());
                 File output = path.resolve("inno.zip").toFile();
                 if (!path.toFile().exists()) {
                     path.toFile().mkdirs();
                     downloadFile(latestReleaseZip.get("zipball_url").getAsString(), output);
-                    System.out.println("Download completed.");
+                    Main.log("Download completed.");
                     unzipAndFlatten(output, path.toFile());
-                    System.out.println("Unzip completed to " + path);
+                    Main.log("Unzip completed to " + path);
                 }
                 return path;
             } else {
-                System.out.println("Failed to get the latest release ZIP URL.");
+                Main.log("Failed to get the latest release ZIP URL.");
             }
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            Main.log("Error: " + e.getMessage());
         }
         return null;
     }
@@ -84,7 +84,7 @@ public class GitHub {
     }
 
     public static JsonObject getLatestReleaseZip(String apiUrl) throws Exception {
-        System.out.println("Calling API: " + apiUrl);
+        Main.log("Calling API: " + apiUrl);
         URL url = new URL(apiUrl);
         HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
         httpConnection.setRequestMethod("GET");
@@ -100,7 +100,7 @@ public class GitHub {
                 return JsonParser.parseString(response.toString()).getAsJsonObject();
             }
         } else {
-            System.out.println("Failed to get latest release info. HTTP Response Code: " + responseCode);
+            Main.log("Failed to get latest release info. HTTP Response Code: " + responseCode);
         }
         httpConnection.disconnect();
         return null;
@@ -122,7 +122,7 @@ public class GitHub {
                 }
             }
         } else {
-            System.out.println("Failed to download file. HTTP Response Code: " + responseCode);
+            Main.log("Failed to download file. HTTP Response Code: " + responseCode);
         }
         httpConnection.disconnect();
     }
