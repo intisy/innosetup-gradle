@@ -4,6 +4,9 @@ import org.gradle.api.Project;
 import org.gradle.api.Task;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main class.
@@ -11,6 +14,7 @@ import java.io.File;
 class Main implements org.gradle.api.Plugin<Project> {
 	static final boolean auto = false;
 	static final boolean debug = true;
+	static final List<File> files = new ArrayList<File>();
 	/**
 	 * Applies all the project stuff.
 	 */
@@ -20,6 +24,19 @@ class Main implements org.gradle.api.Plugin<Project> {
 			project.afterEvaluate(proj -> innoExtension.run(project));
 		Task task = project.task("processInnoValues");
 		task.doLast(proj -> innoExtension.run(project));
+		task = project.task("waitForInnoValues");
+		task.doLast(proj -> {
+			for (File file : files) {
+				Main.log("Waiting for output to be written to " + file);
+				try {
+					FileUtils.waitForFile(file, 1000);
+				} catch (InterruptedException | IOException e) {
+					throw new RuntimeException(e);
+				}
+				Main.log("Finished Inno Setup to " + file);
+				files.remove(file);
+			}
+		});
     }
 
 	public static void main(String[] args) {

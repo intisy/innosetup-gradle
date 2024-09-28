@@ -36,30 +36,10 @@ public class InnoSetup {
         Main.log("Starting Inno Setup script " + scriptPath.getAbsolutePath() + " using " + innoSetupCompiler.getAbsolutePath());
         File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer.exe").toFile();
         output.delete();
+        Main.files.add(output);
         ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
         processBuilder.directory(path);
-        Process process = null;
-        try {
-            process = processBuilder.start();
-            System.out.println("Process started.");
-            Thread.sleep(5000); // 5 seconds
-            System.out.println("Terminating process...");
-            process.destroy();
-            int exited = process.waitFor();
-            if (exited == 1) {
-                System.out.println("Process terminated.");
-            }
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            if (process != null && process.isAlive()) {
-                process.destroyForcibly();
-                System.out.println("Process forcefully terminated.");
-            }
-        }
-        Main.log("Waiting for output to be written to " + output);
-        FileUtils.waitForFile(output, 1000);
-        Main.log("Finished Inno Setup to " + output);
+        processBuilder.start();
     }
 
     public void createInnoSetupScript(File scriptPath) throws IOException {
