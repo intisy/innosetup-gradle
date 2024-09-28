@@ -40,9 +40,7 @@ public class InnoSetup {
         ProcessBuilder processBuilder = new ProcessBuilder(innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath());
         processBuilder.directory(path);
         processBuilder.inheritIO();
-        Process process = processBuilder.start();
-        Thread.sleep(10000);
-        process.waitFor();
+        processBuilder.start();
     }
 
     public void createInnoSetupScript(File scriptPath) throws IOException {
