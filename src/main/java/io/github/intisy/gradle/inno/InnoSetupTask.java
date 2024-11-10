@@ -6,6 +6,7 @@ import org.gradle.api.tasks.TaskAction;
 import java.io.File;
 import java.io.IOException;
 
+@SuppressWarnings("unused")
 public class InnoSetupTask extends DefaultTask {
     String fileName;
     String name;
