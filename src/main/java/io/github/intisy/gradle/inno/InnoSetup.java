@@ -1,8 +1,6 @@
 package io.github.intisy.gradle.inno;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -36,8 +34,17 @@ public class InnoSetup {
         Main.log("Starting Inno Setup script " + scriptPath.getAbsolutePath() + " using " + innoSetupCompiler.getAbsolutePath());
         File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer.exe").toFile();
         output.delete();
-        String[] command = {innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath()};
-        Runtime.getRuntime().exec(command, null, path);
+        ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", innoSetupCompiler.getAbsolutePath() + " " + scriptPath.getAbsolutePath());
+        processBuilder.redirectErrorStream(true); // Combine standard and error output
+        Process process = processBuilder.start();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        }
+        process.waitFor();
+        System.out.println("Process finished with exit code: " + process.exitValue());
     }
 
     public void createInnoSetupScript(File scriptPath) throws IOException {
