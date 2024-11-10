@@ -1,6 +1,6 @@
 # Inno Setup Gradle
 
-Archives containing JAR files are available as [releases](https://github.com/intisy/intisy/innosetup-gradle/releases).
+Archives containing JAR files are available as [releases](https://github.com/intisy/innosetup-gradle/releases).
 
 ## What is Online Gradle?
 
@@ -12,7 +12,7 @@ Using the plugins DSL:
 
 ```groovy
 plugins {
-    id "io.github.intisy.intisy/innosetup-gradle" version "1.3.13"
+    id "io.github.intisy.innosetup-gradle" version "1.3.14"
 }
 ```
 
@@ -26,11 +26,11 @@ buildscript {
         }
     }
     dependencies {
-        classpath "io.github.intisy:intisy/innosetup-gradle:1.3.13"
+        classpath "io.github.intisy.innosetup-gradle:1.3.14"
     }
 }
 
-apply plugin: "io.github.intisy.intisy/innosetup-gradle"
+apply plugin: "io.github.intisy.innosetup-gradle"
 ```
 
 Once you have the plugin installed you can use it like so:
