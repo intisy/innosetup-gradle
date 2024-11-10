@@ -14,7 +14,6 @@ import java.util.List;
 class Main implements org.gradle.api.Plugin<Project> {
 	static final boolean auto = false;
 	static final boolean debug = true;
-	static final List<File> files = new ArrayList<File>();
 	/**
 	 * Applies all the project stuff.
 	 */

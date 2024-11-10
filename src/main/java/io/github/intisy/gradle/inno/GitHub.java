@@ -20,10 +20,10 @@ public class GitHub {
         try {
             JsonObject latestReleaseZip = getLatestReleaseZip(GITHUB_LATEST_RELEASE_API);
             if (latestReleaseZip != null) {
-                Main.log("Downloading from: " + latestReleaseZip);
                 Path path = GradleUtils.getGradleHome().resolve("inno").resolve(latestReleaseZip.get("tag_name").getAsString());
                 File output = path.resolve("inno.zip").toFile();
                 if (!path.toFile().exists()) {
+                    Main.log("Downloading Inno Setup from: " + latestReleaseZip.get("zipball_url"));
                     path.toFile().mkdirs();
                     downloadFile(latestReleaseZip.get("zipball_url").getAsString(), output);
                     Main.log("Download completed.");
@@ -84,7 +84,6 @@ public class GitHub {
     }
 
     public static JsonObject getLatestReleaseZip(String apiUrl) throws Exception {
-        Main.log("Calling API: " + apiUrl);
         URL url = new URL(apiUrl);
         HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
         httpConnection.setRequestMethod("GET");

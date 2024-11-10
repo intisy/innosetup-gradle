@@ -23,7 +23,7 @@ public class InnoSetup {
             path.toPath().resolve(iconPath).toFile().delete();
             Files.copy(icon == null ? path.getParentFile().toPath().resolve(iconPath) : icon.toPath(), path.toPath().resolve(iconPath));
         }
-        this.jreName = "libs\\jre";
+        this.jreName = "libs\\jre-windows";
     }
 
     public void buildInstaller() throws IOException, InterruptedException {
@@ -38,7 +38,6 @@ public class InnoSetup {
         output.delete();
         String[] command = {innoSetupCompiler.getAbsolutePath(), scriptPath.getAbsolutePath()};
         Runtime.getRuntime().exec(command, null, path);
-        Main.files.add(output);
     }
 
     public void createInnoSetupScript(File scriptPath) throws IOException {
