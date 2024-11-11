@@ -12,30 +12,39 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class GitHub {
-    private static final String OWNER = "intisy";
-    private static final String REPO = "InnoSetup";
-    private static final String GITHUB_LATEST_RELEASE_API = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/releases/latest";
+    private final String releaseUrl;
+    private final boolean debug;
 
-    public static Path download() {
+    public GitHub(String releaseUrl, boolean debug) {
+        this.releaseUrl = releaseUrl;
+        this.debug = debug;
+    }
+
+    public void log(String log) {
+        if (debug)
+            System.out.println(log);
+    }
+
+    public Path download() {
         try {
-            JsonObject latestReleaseZip = getLatestReleaseZip(GITHUB_LATEST_RELEASE_API);
+            JsonObject latestReleaseZip = getLatestReleaseZip(releaseUrl);
             if (latestReleaseZip != null) {
                 Path path = GradleUtils.getGradleHome().resolve("inno").resolve(latestReleaseZip.get("tag_name").getAsString());
                 File output = path.resolve("inno.zip").toFile();
                 if (!path.toFile().exists()) {
-                    Main.log("Downloading Inno Setup from: " + latestReleaseZip.get("zipball_url"));
+                    log("Downloading Inno Setup from: " + latestReleaseZip.get("zipball_url"));
                     path.toFile().mkdirs();
                     downloadFile(latestReleaseZip.get("zipball_url").getAsString(), output);
-                    Main.log("Download completed.");
+                    log("Download completed.");
                     unzipAndFlatten(output, path.toFile());
-                    Main.log("Unzip completed to " + path);
+                    log("Unzip completed to " + path);
                 }
                 return path;
             } else {
-                Main.log("Failed to get the latest release ZIP URL.");
+                log("Failed to get the latest release ZIP URL.");
             }
         } catch (Exception e) {
-            Main.log("Error: " + e.getMessage());
+            log("Error: " + e.getMessage());
         }
         return null;
     }
@@ -83,7 +92,7 @@ public class GitHub {
         }
     }
 
-    public static JsonObject getLatestReleaseZip(String apiUrl) throws Exception {
+    public JsonObject getLatestReleaseZip(String apiUrl) throws Exception {
         URL url = new URL(apiUrl);
         HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
         httpConnection.setRequestMethod("GET");
@@ -99,13 +108,13 @@ public class GitHub {
                 return JsonParser.parseString(response.toString()).getAsJsonObject();
             }
         } else {
-            Main.log("Failed to get latest release info. HTTP Response Code: " + responseCode);
+            log("Failed to get latest release info. HTTP Response Code: " + responseCode);
         }
         httpConnection.disconnect();
         return null;
     }
 
-    public static void downloadFile(String fileUrl, File outputFile) throws Exception {
+    public void downloadFile(String fileUrl, File outputFile) throws Exception {
         URL url = new URL(fileUrl);
         HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
         httpConnection.setRequestMethod("GET");
@@ -121,7 +130,7 @@ public class GitHub {
                 }
             }
         } else {
-            Main.log("Failed to download file. HTTP Response Code: " + responseCode);
+            log("Failed to download file. HTTP Response Code: " + responseCode);
         }
         httpConnection.disconnect();
     }

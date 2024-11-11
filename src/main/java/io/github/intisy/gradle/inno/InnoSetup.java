@@ -6,13 +6,14 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 public class InnoSetup {
-    File path;
-    String fileName;
-    String iconPath;
-    String name;
-    String jreName;
+    private final File path;
+    private final String fileName;
+    private final String iconPath;
+    private final String name;
+    private final String jreName;
+    private final boolean debug;
 
-    public InnoSetup(File path, String fileName, String name, File icon, boolean copyIcon) throws IOException {
+    public InnoSetup(File path, String fileName, String name, File icon, boolean copyIcon, boolean debug) throws IOException {
         this.path = path;
         this.fileName = "libs\\" + fileName;
         this.name = name;
@@ -22,16 +23,23 @@ public class InnoSetup {
             Files.copy(icon == null ? path.getParentFile().toPath().resolve(iconPath) : icon.toPath(), path.toPath().resolve(iconPath));
         }
         this.jreName = "libs\\jre-windows";
+        this.debug = debug;
+    }
+
+    public void log(String log) {
+        if (debug)
+            System.out.println(log);
     }
 
     public void buildInstaller() throws IOException, InterruptedException {
         Path innoFolder = path.toPath().resolve("inno");
         innoFolder.toFile().delete();
-        FileUtils.copyFolder(Objects.requireNonNull(GitHub.download()), innoFolder);
+        GitHub gitHub = new GitHub("https://api.github.com/repos/intisy/InnoSetup/releases/latest", debug);
+        FileUtils.copyFolder(Objects.requireNonNull(gitHub.download()), innoFolder);
         File innoSetupCompiler = innoFolder.resolve("ISCC.exe").toFile();
         File scriptPath = path.toPath().resolve("build.iss").toFile();
         createInnoSetupScript(scriptPath);
-        Main.log("Starting Inno Setup script " + scriptPath.getAbsolutePath() + " using " + innoSetupCompiler.getAbsolutePath());
+        log("Starting Inno Setup script " + scriptPath.getAbsolutePath() + " using " + innoSetupCompiler.getAbsolutePath());
         File output = path.toPath().resolve("libs").resolve(name.toLowerCase().replace(" ", "-") + "-installer.exe").toFile();
         output.delete();
         ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", innoSetupCompiler.getAbsolutePath() + " " + scriptPath.getAbsolutePath());
@@ -40,11 +48,11 @@ public class InnoSetup {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                log(line);
             }
         }
         process.waitFor();
-        System.out.println("Process finished with exit code: " + process.exitValue());
+        log("Process finished with exit code: " + process.exitValue());
     }
 
     public void createInnoSetupScript(File scriptPath) throws IOException {
@@ -75,6 +83,6 @@ public class InnoSetup {
         try (FileWriter writer = new FileWriter(scriptPath)) {
             writer.write(scriptContent);
         }
-        Main.log("Inno Setup script created at: " + scriptPath);
+        log("Inno Setup script created at: " + scriptPath);
     }
 }
